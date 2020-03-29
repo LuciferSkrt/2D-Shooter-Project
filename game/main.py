@@ -7,7 +7,7 @@ class Game:
         self.width = win_size[0]
         self.height = win_size[1]
         self.win = pygame.display.set_mode(win_size)
-        pygame.display.set_caption("Pew Pew!")
+        pygame.display.set_caption("Pew Pew! - Private Test Build.")
 
     def input(self, keys):
         pass
@@ -29,7 +29,8 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return
+                pygame.quit()
+                quit()
 
         g.input(pygame.key.get_pressed())
         g.update(clock.get_time() / 1000)
