@@ -22,4 +22,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    sys.exit() # @Alex, sys.exit() does the same thing as quit() but its recommended over quit().
+    # @Alex, sys.exit() does the same thing as quit() but its recommended over quit().
+    sys.exit()
