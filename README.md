@@ -4,8 +4,8 @@
 
 ## Install Dependencies
 
-'pip install -r requirements.txt'
+`pip install -r requirements.txt`
 
 ## Running the Game
 
-'python run.py'
+`python run.py`
