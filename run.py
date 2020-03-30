@@ -4,7 +4,7 @@ from game.main import Game
 
 
 def main():
-    g = Game((1024, 700))
+    g = Game((1024, 700), "Pew Pew!")
     clock = pygame.time.Clock()
     fps = 60
 
