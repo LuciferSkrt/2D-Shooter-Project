@@ -1,47 +1,49 @@
 #modules and imports
-import pygame,sys
+import sys
 import random
+import pygame
 
-#initializer
+# initializer
 pygame.init()
 pygame.mixer.init()
 
-#window size
+# window size
 g_width = 1100
 g_height = 600
 
-#framerate
+# framerate
 fps = 60
 clock = pygame.time.Clock()
 
-#colors
-white = (255,255,255)
-black = (0,0,0)
-red = (255,0,0)
-green = (0,255,0)
-blue = (0,0,255)
+# colors
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
 
-#window information
+# window information
 g = pygame.display.set_mode((g_width, g_height))
 pygame.display.set_caption('Pew Pew - Test Build')
 
+
 class Player(pygame.sprite.Sprite):
-    #sprite for the player
+    # sprite for the player
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((50,50))
+        super().__init__()
+        self.image = pygame.Surface((50, 50))
         self.image.fill(white)
         self.rect = self.image.get_rect()
         self.rect.center = (g_width / 2, g_height / 2)
         self.speedx = 0
         self.speedy = 0
 
-    def update(self):  
+    def update(self):
         self.speedx = 0
         self.speedy = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_a]:
-            self.speedx =-5
+            self.speedx = -5
         if keystate[pygame.K_d]:
             self.speedx = 5
         self.rect.x += self.speedx
@@ -60,21 +62,22 @@ class Player(pygame.sprite.Sprite):
         if self.rect.bottom > g_height:
             self.rect.bottom = g_height
 
+
 all_sprites = pygame.sprite.Group()
 player = Player()
 all_sprites.add(player)
 
 
-#game loop
+# game loop
 while True:
-    #keep game running at right speed
+    # keep game running at right speed
     clock.tick(fps)
-    #process input (events)
+    # process input (events)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    #update
+    # update
     all_sprites.update()
     #draw / render
     g.fill(black)
@@ -82,7 +85,4 @@ while True:
     # *after* drawing everything, flip the display
     pygame.display.flip()
 
-pygame.quit()    
-
-
-
+pygame.quit()
