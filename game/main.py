@@ -43,14 +43,14 @@ class Player(pygame.sprite.Sprite):
         self.speedy = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_a]:
-            self.speedx = -5
+            self.speedx = -4
         if keystate[pygame.K_d]:
-            self.speedx = 5
+            self.speedx = 4
         self.rect.x += self.speedx
         if keystate[pygame.K_w]:
-            self.speedy = -5
+            self.speedy = -4
         if keystate[pygame.K_s]:
-            self.speedy = 5
+            self.speedy = 4
         self.rect.y += self.speedy
         #constraints / boundaries
         if self.rect.right > g_width:
