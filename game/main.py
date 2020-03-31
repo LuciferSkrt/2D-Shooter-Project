@@ -1,45 +1,88 @@
-import pygame
-from glm import vec2
+#modules and imports
+import pygame,sys
+import random
 
-from game.shooter import Shooter
+#initializer
+pygame.init()
+pygame.mixer.init()
+
+#window size
+g_width = 1100
+g_height = 600
+
+#framerate
+fps = 60
+clock = pygame.time.Clock()
+
+#colors
+white = (255,255,255)
+black = (0,0,0)
+red = (255,0,0)
+green = (0,255,0)
+blue = (0,0,255)
+
+#window information
+g = pygame.display.set_mode((g_width, g_height))
+pygame.display.set_caption('Pew Pew - Test Build')
+
+class Player(pygame.sprite.Sprite):
+    #sprite for the player
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((50,50))
+        self.image.fill(white)
+        self.rect = self.image.get_rect()
+        self.rect.center = (g_width / 2, g_height / 2)
+        self.speedx = 0
+        self.speedy = 0
+
+    def update(self):  
+        self.speedx = 0
+        self.speedy = 0
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_a]:
+            self.speedx =-5
+        if keystate[pygame.K_d]:
+            self.speedx = 5
+        self.rect.x += self.speedx
+        if keystate[pygame.K_w]:
+            self.speedy = -5
+        if keystate[pygame.K_s]:
+            self.speedy = 5
+        self.rect.y += self.speedy
+        #constraints / boundaries
+        if self.rect.right > g_width:
+            self.rect.right = g_width
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > g_height:
+            self.rect.bottom = g_height
+
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
 
 
-class Game:
-    def __init__(self, win_size, title):
-        self.width = win_size[0]
-        self.height = win_size[1]
-        self.win = pygame.display.set_mode(win_size)
-        pygame.display.set_caption(title)
+#game loop
+while True:
+    #keep game running at right speed
+    clock.tick(fps)
+    #process input (events)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+    #update
+    all_sprites.update()
+    #draw / render
+    g.fill(black)
+    all_sprites.draw(g)
+    # *after* drawing everything, flip the display
+    pygame.display.flip()
 
-        self.background = pygame.Color(180, 180, 180)
-        self.mouse = pygame.mouse
+pygame.quit()    
 
-        self.player = Shooter(
-            vec2(self.width / 2, self.height / 2), vec2(350)
-        )
 
-    def input(self, keys):
-        velocity = vec2(0)
 
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            velocity.x = -1
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            velocity.x = 1
-
-        if keys[pygame.K_UP] or keys[pygame.K_w]:
-            velocity.y = -1
-        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            velocity.y = 1
-
-        self.player.move(velocity)
-
-    def update(self, delta):
-        self.player.look_at(vec2(self.mouse.get_pos()))
-        self.player.update(delta)
-
-    def render(self, window):
-        window.fill(self.background)
-
-        self.player.render(window)
-
-        pygame.display.update()
