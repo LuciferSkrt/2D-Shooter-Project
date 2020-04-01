@@ -17,23 +17,20 @@ g_height = 800
 fps = 60
 clock = pygame.time.Clock()
 
-# colors
-white = (255, 255, 255)
-black = (0, 0, 0)
-gray = (170, 170, 170)
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-
 # window information
 g = pygame.display.set_mode((g_width, g_height))
 pygame.display.set_caption('Pew Pew - Test Build')
 
 
-class Player(pygame.sprite.Sprite):
-    # sprite for the player
+class Player:
+    """
+    Class for player
+
+    Arguments:
+        pos {tuple} -- (x position, y position)
+    """
+
     def __init__(self, pos):
-        super().__init__()
         sizex = 170
         sizey = sizex // 2
         self.image = pygame.transform.scale(
@@ -102,16 +99,16 @@ while True:
     keystate = pygame.key.get_pressed()
     speed = 4
 
-    if keystate[pygame.K_a]:
+    if keystate[pygame.K_a] or keystate[pygame.K_LEFT]:
         player.speedx = -speed
-    elif keystate[pygame.K_d]:
+    elif keystate[pygame.K_d] or keystate[pygame.K_RIGHT]:
         player.speedx = speed
     else:
         player.speedx = 0
 
-    if keystate[pygame.K_w]:
+    if keystate[pygame.K_w] or keystate[pygame.K_UP]:
         player.speedy = -speed
-    elif keystate[pygame.K_s]:
+    elif keystate[pygame.K_s] or keystate[pygame.K_DOWN]:
         player.speedy = speed
     else:
         player.speedy = 0
@@ -121,7 +118,7 @@ while True:
     for sprite in all_sprites:
         sprite.update()
     #draw / render
-    g.fill(gray)
+    g.fill(pygame.Color("gray"))
     for sprite in all_sprites:
         sprite.draw()
     # *after* drawing everything, flip the display
