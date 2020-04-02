@@ -2,7 +2,7 @@
 import sys
 import os
 import random
-from math import atan2, degrees
+from math import atan2, degrees, cos, sin, radians
 import pygame
 
 # initializer
@@ -66,6 +66,36 @@ class Player:
         self.rect.width, self.rect.height = rect.width, rect.height
 
 
+class Bullet:
+    """
+    Class for bullets
+
+    Arguments:
+        pos {tuple} -- (x position, y position)
+        hdg {int} -- heading angle
+    """
+
+    def __init__(self, pos, hdg):
+        self.radius = 5
+        self.rect = pygame.Rect(
+            pos[0] - self.radius,
+            pos[1] - self.radius,
+            self.radius * 2,
+            self.radius * 2
+        )
+
+        speed = 15
+        self.speedx = cos(radians(hdg)) * speed
+        self.speedy = sin(radians(hdg)) * speed
+
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+
+    def draw(self):
+        pygame.draw.ellipse(g, pygame.Color("black"), self.rect)
+
+
 def get_angle(pos1, pos2):
     """
     Get the angle between 2 points
@@ -94,26 +124,29 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            bullet = Bullet((player.rect.x, player.rect.y), player.hdg)
+            all_sprites.append(bullet)
     # update
-    mouse = pygame.mouse.get_pos()
+    mouse = pygame.mouse
     keystate = pygame.key.get_pressed()
-    speed = 4
+    move_speed = 4
 
     if keystate[pygame.K_a] or keystate[pygame.K_LEFT]:
-        player.speedx = -speed
+        player.speedx = -move_speed
     elif keystate[pygame.K_d] or keystate[pygame.K_RIGHT]:
-        player.speedx = speed
+        player.speedx = move_speed
     else:
         player.speedx = 0
 
     if keystate[pygame.K_w] or keystate[pygame.K_UP]:
-        player.speedy = -speed
+        player.speedy = -move_speed
     elif keystate[pygame.K_s] or keystate[pygame.K_DOWN]:
-        player.speedy = speed
+        player.speedy = move_speed
     else:
         player.speedy = 0
 
-    player.hdg = get_angle(mouse, (player.rect.x, player.rect.y))
+    player.hdg = get_angle(mouse.get_pos(), (player.rect.x, player.rect.y))
 
     for sprite in all_sprites:
         sprite.update()
