@@ -66,7 +66,7 @@ class Player:
         pos = (self.rect.centerx - rect.width / 2, self.rect.centery - rect.height / 2)
         g.blit(img, pos)
 
-        pygame.draw.rect(g, pygame.Color("black"), self.rect, 2)
+        # pygame.draw.rect(g, pygame.Color("black"), self.rect, 2)
 
 
 class Bullet:
