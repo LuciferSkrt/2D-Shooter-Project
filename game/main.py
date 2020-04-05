@@ -57,13 +57,16 @@ class Player:
             self.rect.top = 0
         if self.rect.bottom > g_height:
             self.rect.bottom = g_height
+        print(self.rect.center)
 
     def draw(self):
         img = pygame.transform.rotate(self.image, -self.hdg)
         rect = img.get_rect()
-        pos = (self.rect.x - rect.width / 2, self.rect.y - rect.height / 2)
+
+        pos = (self.rect.centerx - rect.width / 2, self.rect.centery - rect.height / 2)
         g.blit(img, pos)
-        self.rect.width, self.rect.height = rect.width, rect.height
+
+        pygame.draw.rect(g, pygame.Color("black"), self.rect, 2)
 
 
 class Bullet:
@@ -125,7 +128,7 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN:
-            bullet = Bullet((player.rect.x, player.rect.y), player.hdg)
+            bullet = Bullet(player.rect.center, player.hdg)
             all_sprites.append(bullet)
     # update
     mouse = pygame.mouse
@@ -146,7 +149,7 @@ while True:
     else:
         player.speedy = 0
 
-    player.hdg = get_angle(mouse.get_pos(), (player.rect.x, player.rect.y))
+    player.hdg = get_angle(mouse.get_pos(), player.rect.center)
 
     for sprite in all_sprites:
         sprite.update()
