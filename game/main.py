@@ -5,6 +5,8 @@ import random
 from math import atan2, degrees, cos, sin, radians
 import pygame
 
+from game.util import get_angle
+
 # initializer
 pygame.init()
 pygame.mixer.init()
@@ -97,20 +99,6 @@ class Bullet:
 
     def draw(self):
         pygame.draw.ellipse(g, pygame.Color("black"), self.rect)
-
-
-def get_angle(pos1, pos2):
-    """
-    Get the angle between 2 points
-
-    Arguments:
-        pos1 {int} -- position of 1st object
-        pos2 {int} -- position of 2nd object
-    """
-
-    dx = pos1[0] - pos2[0]
-    dy = pos1[1] - pos2[1]
-    return degrees(atan2(dy, dx))
 
 
 all_sprites = []
